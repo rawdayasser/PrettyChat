@@ -1,4 +1,4 @@
-package com.example.rawda.prettychat.ui.view.main;
+package com.example.rawda.prettychat.data.models;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
