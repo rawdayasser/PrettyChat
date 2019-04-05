@@ -10,34 +10,22 @@ import java.util.Objects;
 public class Like {
     private long _id;
     private User owner;
-    private Comment receiverComment;
-    private Post receiverPost;
-    private int postOrComment;
-    private Date date;
+   private Date date;
 
     public Like() {
         _id = -1;
         owner = new User();
-        receiverComment = new Comment();
-        receiverPost = new Post();
-        postOrComment = 1;
-        date = new Date();
+         date = new Date();
     }
 
-    public Like(long _id, User owner, Comment receiverComment, Post receiverPost, int postOrComment, Date date) {
+    public Like(long _id, User owner, Comment comment, Post receiverPost, int postOrComment, Date date) {
         this._id = _id;
         this.owner = owner;
-        this.receiverComment = receiverComment;
-        this.receiverPost = receiverPost;
-        this.postOrComment = postOrComment;
         this.date = date;
     }
 
-    public Like(User owner, Comment receiverComment, Post receiverPost, int postOrComment, Date date) {
+    public Like(User owner, Comment comment, Post receiverPost, int postOrComment, Date date) {
         this.owner = owner;
-        this.receiverComment = receiverComment;
-        this.receiverPost = receiverPost;
-        this.postOrComment = postOrComment;
         this.date = date;
     }
 
@@ -57,30 +45,6 @@ public class Like {
         this.owner = owner;
     }
 
-    public Comment getReceiverComment() {
-        return receiverComment;
-    }
-
-    public void setReceiverComment(Comment receiverComment) {
-        this.receiverComment = receiverComment;
-    }
-
-    public Post getReceiverPost() {
-        return receiverPost;
-    }
-
-    public void setReceiverPost(Post receiverPost) {
-        this.receiverPost = receiverPost;
-    }
-
-    public int getPostOrComment() {
-        return postOrComment;
-    }
-
-    public void setPostOrComment(int postOrComment) {
-        this.postOrComment = postOrComment;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -96,10 +60,7 @@ public class Like {
         if (!(o instanceof Like)) return false;
         Like like = (Like) o;
         return get_id() == like.get_id() &&
-                getPostOrComment() == like.getPostOrComment() &&
                 Objects.equals(getOwner(), like.getOwner()) &&
-                Objects.equals(getReceiverComment(), like.getReceiverComment()) &&
-                Objects.equals(getReceiverPost(), like.getReceiverPost()) &&
                 Objects.equals(getDate(), like.getDate());
     }
 
@@ -108,7 +69,7 @@ public class Like {
     @Override
     public int hashCode() {
 
-        return Objects.hash(get_id(), getOwner(), getReceiverComment(), getReceiverPost(), getPostOrComment(), getDate());
+        return Objects.hash(get_id(), getOwner(), getDate());
     }
 
     @Override
@@ -116,9 +77,6 @@ public class Like {
         return "Like{" +
                 "_id=" + _id +
                 ", owner=" + owner +
-                ", receiverComment=" + receiverComment +
-                ", receiverPost=" + receiverPost +
-                ", postOrComment=" + postOrComment +
                 ", date=" + date +
                 '}';
     }

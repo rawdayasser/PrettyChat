@@ -4,35 +4,33 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import java.text.DateFormat;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class User {
-    private long _id;
-    private String fName;
-    private String lName;
-    private String email;
-    private String userName;
-    private String password;
-    private Date birthDate;
-    private String phone_number;
-    private String address;
-    private ArrayList<Message> messages;
-    private ArrayList<Like> likes;
+    protected static long _id = 0;
+    protected String fName;
+    protected String lName;
+    protected String email;
+    protected String userName;
+    protected String password;
+    protected Date birthDate;
+    protected String phone_number;
+    protected String address;
+    protected byte[] photo;
+    protected List<Message> messages;
+    protected List<User> followings;
+    protected List<Post> posts;
 
-    public User() {
-        fName = "";
-        lName = "";
-        email = "";
-        userName = "";
-        password = "";
-        birthDate = new Date();
-        phone_number = "";
-        address = "";
-    }
-    public User(long _id, String fName, String lName, String email, String userName,
-                String password, Date birthDate, String phone_number, String address) {
+
+
+    public User(long _id, String fName, String lName, String email,
+                String userName, String password, Date birthDate,
+                String phone_number, String address, byte[] photo) {
         this._id = _id;
         this.fName = fName;
         this.lName = lName;
@@ -42,10 +40,13 @@ public class User {
         this.birthDate = birthDate;
         this.phone_number = phone_number;
         this.address = address;
+        this.photo = photo;
+        initialize_Lists();
     }
 
-    public User(String fName, String lName, String email, String userName,
-                String password, Date birthDate, String phone_number, String address) {
+    public User(String fName, String lName, String email, Date birthDate,
+                String phone_number, String address, byte[] photo) {
+        _id++;
         this.fName = fName;
         this.lName = lName;
         this.email = email;
@@ -54,9 +55,29 @@ public class User {
         this.birthDate = birthDate;
         this.phone_number = phone_number;
         this.address = address;
+        this.photo = photo;
+        initialize_Lists();
     }
 
+    public User() {
+        initialize_Lists();
+    }
+    private void initialize_Lists(){
+        messages = new ArrayList<>();
+        followings = new ArrayList<>();
+        posts = new ArrayList<>();
 
+    }
+    public void addMessage(Message message){
+        messages.add(message);
+    }
+
+    public void addFollowing(User user){
+        followings.add(user);
+    }
+    public void addPost(Post post){
+        posts.add(post);
+    }
     public long get_id() {
         return _id;
     }
@@ -129,7 +150,15 @@ public class User {
         this.address = address;
     }
 
-    public ArrayList<Message> getMessages() {
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public List<Message> getMessages() {
         return messages;
     }
 
@@ -137,15 +166,21 @@ public class User {
         this.messages = messages;
     }
 
-    public ArrayList<Like> getLikes() {
-        return likes;
+    public List<User> getFollowings() {
+        return followings;
     }
 
-    public void setLikes(ArrayList<Like> likes) {
-        this.likes = likes;
+    public void setFollowings(List<User> followings) {
+        this.followings = followings;
+    }
+    public List<Post> getPosts() {
+        return posts;
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void setPosts(ArrayList<Post> posts) {
+        this.posts = posts;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean equals(Object o) {
@@ -153,6 +188,7 @@ public class User {
         if (!(o instanceof User)) return false;
         User user = (User) o;
         return get_id() == user.get_id() &&
+                getPhoto() == user.getPhoto() &&
                 Objects.equals(getfName(), user.getfName()) &&
                 Objects.equals(getlName(), user.getlName()) &&
                 Objects.equals(getEmail(), user.getEmail()) &&
@@ -162,16 +198,36 @@ public class User {
                 Objects.equals(getPhone_number(), user.getPhone_number()) &&
                 Objects.equals(getAddress(), user.getAddress()) &&
                 Objects.equals(getMessages(), user.getMessages()) &&
-                Objects.equals(getLikes(), user.getLikes());
+                Objects.equals(getFollowings(), user.getFollowings());
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
 
-        return Objects.hash(get_id(), getfName(), getlName(), getEmail(), getUserName(), getPassword(), getBirthDate(), getPhone_number(), getAddress(), getMessages(), getLikes());
+        return Objects.hash(get_id(), getfName(), getlName(), getEmail(), getUserName(), getPassword(), getBirthDate(), getPhone_number(),
+                getAddress(), getPhoto(), getMessages(), getFollowings());
+    }
+    private String messageStr(){
+        String str_messages = "";
+        for (int i = 0; i < messages.size(); i++) str_messages += messages.get(i) + " ";
+        return str_messages;
     }
 
+
+
+
+    private String followingsStr(){
+        String str_followings = "";
+        for (int i = 0; i < followings.size(); i++) str_followings += followings.get(i) + " ";
+        return str_followings;
+    }
+    private String postsStr(){
+        String str_posts = "";
+        for (int i = 0; i < posts.size(); i++) str_posts += posts.get(i) + "";
+        return str_posts;
+    }
     @Override
     public String toString() {
         return "User{" +
@@ -184,8 +240,10 @@ public class User {
                 ", birthDate=" + birthDate +
                 ", phone_number='" + phone_number + '\'' +
                 ", address='" + address + '\'' +
-                ", messages=" + messages +
-                ", likes=" + likes +
+                ", photo=" + photo +
+                ", messages=" + messageStr() +
+                ", followings=" + followingsStr() +
+                ", posts=" + postsStr() +
                 '}';
     }
 }

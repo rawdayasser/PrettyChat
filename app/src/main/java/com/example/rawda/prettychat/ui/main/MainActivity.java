@@ -1,4 +1,4 @@
-package com.example.rawda.prettychat.data.models;
+package com.example.rawda.prettychat.ui.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +15,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         MyDatabaseHelper sqLiteOpenHelper = new MyDatabaseHelper(this);
         Log.d("Database Name", sqLiteOpenHelper.toString());
-        sqLiteOpenHelper.displayData();
+
     }
 }

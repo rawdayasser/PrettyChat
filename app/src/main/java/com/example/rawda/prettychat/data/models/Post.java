@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Post {
-    private long _id;
+    private static long _id = 0;
     private String content;
     private User owner;
     private int accessedBy; // 1->public  2->friends  3->group 4->only me
@@ -18,14 +18,27 @@ public class Post {
     private ArrayList<Like> likes = new ArrayList<>();
     private int numberOfShares = 0;
 
-    Post() {
-        _id = -1;
+   public Post() {
+        _id++;
         content = "";
         owner = new User();
         accessedBy = 2;
         date = new Date();
-        }
+        comments = new ArrayList<>();
+        likes = new ArrayList<>();
+        numberOfShares = 0;
 
+   }
+    public Post( String content, User owner, int accessedBy, Date date, ArrayList<Comment> comments, ArrayList<Like> likes, int numberOfShares) {
+        _id++;
+        this.content = content;
+        this.owner = owner;
+        this.accessedBy = accessedBy;
+        this.date = date;
+        this.comments = comments;
+        this.likes = likes;
+        this.numberOfShares = numberOfShares;
+    }
     public Post(long _id, String content, User owner, int accessedBy, Date date, ArrayList<Comment> comments, ArrayList<Like> likes, int numberOfShares) {
         this._id = _id;
         this.content = content;
@@ -42,6 +55,9 @@ public class Post {
         this.owner = owner;
         this.accessedBy = accessedBy;
         this.date = date;
+        comments = new ArrayList<>();
+        likes = new ArrayList<>();
+        numberOfShares = 0;
     }
 
     public long get_id() {
@@ -131,7 +147,16 @@ public class Post {
 
         return Objects.hash(get_id(), getContent(), getOwner(), getAccessedBy(), getDate(), getComments(), getLikes(), getNumberOfShares());
     }
-
+    private String commentsStr(){
+        String str_comments = "";
+        for (int i = 0; i < comments.size(); i++) str_comments += comments.get(i) + " ";
+        return  str_comments;
+    }
+    private String likesStr(){
+        String str_likes = "";
+        for (int i = 0; i < likes.size(); i++) str_likes += likes.get(i) + " ";
+        return str_likes;
+    }
     @Override
     public String toString() {
         return "Post{" +
@@ -140,8 +165,8 @@ public class Post {
                 ", owner=" + owner +
                 ", accessedBy=" + accessedBy +
                 ", date=" + date +
-                ", comments=" + comments +
-                ", likes=" + likes +
+                ", comments=" + commentsStr() +
+                ", likes=" + likesStr() +
                 ", numberOfShares=" + numberOfShares +
                 '}';
     }
